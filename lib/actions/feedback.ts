@@ -2,6 +2,7 @@
 
 import { getSupabaseServer } from '@/lib/supabase/server'
 import { analyzeFeedback } from '@/lib/ai-analysis'
+import { cookies } from 'next/headers'
 
 export async function submitFeedback(formData: {
   collegeId: string
@@ -13,23 +14,23 @@ export async function submitFeedback(formData: {
   try {
     const supabase = await getSupabaseServer()
 
-    // Analyze feedback using AI
-    const analysis = analyzeFeedback(formData.text)
+    const analysis = analyzeFeedback(formData.text, formData.category)
 
-    // Insert feedback into database
     const { data, error } = await supabase
       .from('feedback')
       .insert([
         {
           college_id: formData.collegeId,
-          category: formData.category,
+          category: analysis.category,
           text: formData.text,
           title: formData.title || formData.text.substring(0, 100),
           is_anonymous: formData.isAnonymous !== false,
           priority: analysis.priority,
           sentiment: analysis.sentiment,
           summary: analysis.summary,
-          ai_analysis: analysis,
+          ai_analysis: {
+            ...analysis,
+          },
           status: 'new',
         },
       ])
@@ -55,9 +56,21 @@ export async function getFeedbackForAdmin(adminToken: string) {
   try {
     const supabase = await getSupabaseServer()
 
-    // Get admin user from token-based lookup
-    // For demo, use hardcoded college ID
-    const collegeId = '550e8400-e29b-41d4-a716-446655440001'
+    const cookieStore = await cookies()
+    const sessionCookie = cookieStore.get('admin_session')
+    
+    let collegeId = '550e8400-e29b-41d4-a716-446655440001'
+    
+    if (sessionCookie) {
+      try {
+        const session = JSON.parse(sessionCookie.value)
+        if (session.collegeId) {
+          collegeId = session.collegeId
+        }
+      } catch (e) {
+        console.log('[v0] Failed to parse session cookie')
+      }
+    }
 
     const { data, error } = await supabase
       .from('feedback')

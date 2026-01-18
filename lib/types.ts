@@ -42,6 +42,16 @@ export type User = {
   updated_at: string
 }
 
+export type AIAnalysis = {
+  category: string
+  priority: 'high' | 'medium' | 'low'
+  sentiment: 'positive' | 'neutral' | 'negative'
+  summary: string
+  language: 'english' | 'hindi' | 'hinglish' | 'other'
+  actionable_insight: string
+  policy_recommendation: string
+}
+
 export type Feedback = {
   id: string
   college_id: string
@@ -55,7 +65,7 @@ export type Feedback = {
   priority: 'high' | 'medium' | 'low'
   sentiment: 'positive' | 'neutral' | 'negative'
   summary: string | null
-  ai_analysis: Record<string, unknown> | null
+  ai_analysis: AIAnalysis | null
   status: 'new' | 'acknowledged' | 'in-progress' | 'resolved'
   assigned_to: string | null
   resolved_at: string | null
