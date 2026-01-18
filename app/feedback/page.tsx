@@ -24,6 +24,52 @@ export default function FeedbackPage() {
   const [isSuccess, setIsSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [collegeId, setCollegeId] = useState<string | null>(null)
+  const [lang, setLang] = useState<'en' | 'hi'>('en')
+
+  const t = {
+    en: {
+      title: 'Share Your Feedback',
+      subtitle: 'Help us improve by sharing your thoughts. All submissions are anonymous and confidential.',
+      issueType: 'Issue Type',
+      issueTypeOptional: '(Optional)',
+      feedbackLabel: 'Your Feedback',
+      placeholder: 'Share your thoughts, concerns, or suggestions...',
+      submit: 'Submit Feedback',
+      submitting: 'Submitting...',
+      clear: 'Clear',
+      successTitle: 'Feedback submitted successfully!',
+      successSubtitle: 'Thank you for helping us improve. Your feedback is being analyzed by our AI system.',
+      whyTitle: 'Why we collect feedback',
+      whyItems: [
+        '✓ Understand student needs and concerns',
+        '✓ Identify trends and patterns',
+        '✓ Prioritize improvements',
+        '✓ Make data-driven decisions',
+      ],
+    },
+    hi: {
+      title: 'अपनी प्रतिक्रिया साझा करें',
+      subtitle: 'अपने विचार साझा करके हमें सुधारने में मदद करें। सभी सबमिशन गुमनाम और गोपनीय हैं।',
+      issueType: 'समस्या का प्रकार',
+      issueTypeOptional: '(वैकल्पिक)',
+      feedbackLabel: 'आपकी प्रतिक्रिया',
+      placeholder: 'अपने विचार, चिंताएं या सुझाव साझा करें...',
+      submit: 'प्रतिक्रिया भेजें',
+      submitting: 'भेज रहे हैं...',
+      clear: 'साफ़ करें',
+      successTitle: 'प्रतिक्रिया सफलतापूर्वक सबमिट की गई!',
+      successSubtitle: 'सुधार करने में हमारी मदद करने के लिए धन्यवाद। आपकी प्रतिक्रिया का हमारे AI सिस्टम द्वारा विश्लेषण किया जा रहा है।',
+      whyTitle: 'हम प्रतिक्रिया क्यों एकत्र करते हैं',
+      whyItems: [
+        '✓ छात्रों की जरूरतों और चिंताओं को समझें',
+        '✓ रुझानों और पैटर्न की पहचान करें',
+        '✓ सुधारों को प्राथमिकता दें',
+        '✓ डेटा-संचालित निर्णय लें',
+      ],
+    },
+  }
+
+  const currentT = t[lang]
 
   // Get college ID from query params or use default
   useEffect(() => {
@@ -86,13 +132,31 @@ export default function FeedbackPage() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <div className="border-b">
-        <div className="container mx-auto max-w-2xl px-4 py-4">
+        <div className="container mx-auto max-w-2xl px-4 py-4 flex justify-between items-center">
           <Link href="/">
             <Button variant="ghost" size="sm" className="gap-2">
               <ArrowLeft className="h-4 w-4" />
               Back
             </Button>
           </Link>
+          <div className="flex bg-muted rounded-md p-1">
+            <Button 
+              variant={lang === 'en' ? 'secondary' : 'ghost'} 
+              size="sm" 
+              onClick={() => setLang('en')}
+              className="px-3"
+            >
+              English
+            </Button>
+            <Button 
+              variant={lang === 'hi' ? 'secondary' : 'ghost'} 
+              size="sm" 
+              onClick={() => setLang('hi')}
+              className="px-3"
+            >
+              हिन्दी
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -101,9 +165,9 @@ export default function FeedbackPage() {
         <div className="space-y-8">
           {/* Page Title */}
           <div className="space-y-2">
-            <h1 className="text-3xl font-bold text-foreground">Share Your Feedback</h1>
+            <h1 className="text-3xl font-bold text-foreground">{currentT.title}</h1>
             <p className="text-muted-foreground">
-              Help us improve by sharing your thoughts. All submissions are anonymous and confidential.
+              {currentT.subtitle}
             </p>
           </div>
 
@@ -114,10 +178,10 @@ export default function FeedbackPage() {
                 <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-green-600 dark:text-green-400" />
                 <div>
                   <h3 className="font-semibold text-green-900 dark:text-green-100">
-                    Feedback submitted successfully!
+                    {currentT.successTitle}
                   </h3>
                   <p className="text-sm text-green-800 dark:text-green-200">
-                    Thank you for helping us improve. Your feedback is being analyzed by our AI system.
+                    {currentT.successSubtitle}
                   </p>
                 </div>
               </div>
@@ -147,14 +211,14 @@ export default function FeedbackPage() {
               {/* Issue Type */}
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-foreground">
-                  Issue Type <span className="text-muted-foreground">(Optional)</span>
+                  {currentT.issueType} <span className="text-muted-foreground">{currentT.issueTypeOptional}</span>
                 </label>
                 <select
                   value={issueType}
                   onChange={(e) => setIssueType(e.target.value)}
                   className="w-full rounded-md border border-input bg-background px-3 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                 >
-                  <option value="">Select a category...</option>
+                  <option value="">{lang === 'en' ? 'Select a category...' : 'एक श्रेणी चुनें...'}</option>
                   {ISSUE_TYPES.map((type) => (
                     <option key={type.value} value={type.value}>
                       {type.label}
@@ -166,18 +230,18 @@ export default function FeedbackPage() {
               {/* Feedback Textarea */}
               <div className="space-y-2">
                 <label htmlFor="feedback" className="block text-sm font-medium text-foreground">
-                  Your Feedback <span className="text-destructive">*</span>
+                  {currentT.feedbackLabel} <span className="text-destructive">*</span>
                 </label>
                 <textarea
                   id="feedback"
                   value={feedback}
                   onChange={(e) => setFeedback(e.target.value)}
-                  placeholder="Share your thoughts, concerns, or suggestions..."
+                  placeholder={currentT.placeholder}
                   className="min-h-40 w-full rounded-md border border-input bg-background px-3 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none"
                   disabled={isSubmitting}
                 />
                 <p className="text-xs text-muted-foreground">
-                  {feedback.length} characters
+                  {feedback.length} {lang === 'en' ? 'characters' : 'अक्षर'}
                 </p>
               </div>
 
@@ -191,17 +255,17 @@ export default function FeedbackPage() {
                   {isSubmitting ? (
                     <>
                       <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground border-t-transparent" />
-                      Submitting...
+                      {currentT.submitting}
                     </>
                   ) : (
                     <>
                       <Send className="h-4 w-4" />
-                      Submit Feedback
+                      {currentT.submit}
                     </>
                   )}
                 </Button>
                 <Button type="button" variant="outline" onClick={() => setFeedback('')}>
-                  Clear
+                  {currentT.clear}
                 </Button>
               </div>
             </form>
@@ -210,12 +274,11 @@ export default function FeedbackPage() {
           {/* Info Box */}
           <Card className="border-primary/20 bg-primary/5 p-4">
             <div className="space-y-2">
-              <h3 className="font-semibold text-foreground">Why we collect feedback</h3>
+              <h3 className="font-semibold text-foreground">{currentT.whyTitle}</h3>
               <ul className="space-y-1 text-sm text-muted-foreground">
-                <li>✓ Understand student needs and concerns</li>
-                <li>✓ Identify trends and patterns</li>
-                <li>✓ Prioritize improvements</li>
-                <li>✓ Make data-driven decisions</li>
+                {currentT.whyItems.map((item, i) => (
+                  <li key={i}>{item}</li>
+                ))}
               </ul>
             </div>
           </Card>

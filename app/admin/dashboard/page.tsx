@@ -167,34 +167,44 @@ export default function AdminDashboard() {
                   <Badge className="bg-primary hover:bg-primary/90">AI Strategic Summary</Badge>
                   <Badge variant="outline" className="border-primary/30 text-primary">Vernacular Support Enabled</Badge>
                 </div>
-                <h2 className="text-2xl font-bold text-foreground mb-2">Campus Health Overview</h2>
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-3">
-                    <h3 className="text-sm font-bold text-muted-foreground uppercase flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-red-500" />
-                      Critical Action Items
-                    </h3>
-                    <ul className="space-y-2">
-                      <li className="text-sm flex gap-2">
-                        <span className="font-bold text-primary">•</span>
-                        <span>Immediately address washroom hygiene complaints in B-Block (4 reports).</span>
-                      </li>
-                      <li className="text-sm flex gap-2">
-                        <span className="font-bold text-primary">•</span>
-                        <span>Faculty interaction in Mechanical Dept needs review (Sentiment dropped 12%).</span>
-                      </li>
-                    </ul>
+                  <h2 className="text-2xl font-bold text-foreground mb-2">Campus Health Overview</h2>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="space-y-3">
+                      <h3 className="text-sm font-bold text-muted-foreground uppercase flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-red-500" />
+                        Critical Action Items
+                      </h3>
+                      <ul className="space-y-2">
+                        {feedbackData.filter(f => f.priority === 'high' && f.status === 'new').slice(0, 3).map((item, i) => (
+                          <li key={i} className="text-sm flex gap-2">
+                            <span className="font-bold text-primary">•</span>
+                            <span>{item.ai_analysis?.actionable_insight || item.summary}</span>
+                          </li>
+                        ))}
+                        {feedbackData.filter(f => f.priority === 'high' && f.status === 'new').length === 0 && (
+                          <li className="text-sm italic text-muted-foreground">No critical items detected.</li>
+                        )}
+                      </ul>
+                    </div>
+                    <div className="space-y-3 border-l border-primary/10 pl-6">
+                      <h3 className="text-sm font-bold text-muted-foreground uppercase flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-green-500" />
+                        Positive Trends
+                      </h3>
+                      <div className="space-y-2">
+                        {feedbackData.filter(f => f.sentiment === 'positive').length > 0 ? (
+                          <p className="text-sm italic">
+                            "{feedbackData.filter(f => f.sentiment === 'positive')[0].ai_analysis?.policy_recommendation || 'Students are showing positive engagement with recent campus initiatives.'}"
+                          </p>
+                        ) : (
+                          <p className="text-sm italic text-muted-foreground">Monitoring campus sentiment trends...</p>
+                        )}
+                        <p className="text-xs text-muted-foreground mt-2">
+                          AI Analysis: {stats.bySentiment.positive} positive vs {stats.bySentiment.negative} negative reports.
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                  <div className="space-y-3 border-l border-primary/10 pl-6">
-                    <h3 className="text-sm font-bold text-muted-foreground uppercase flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-green-500" />
-                      Positive Trends
-                    </h3>
-                    <p className="text-sm italic">
-                      "Recent campus fests and cultural events have significantly boosted student-life sentiment by 25%. Hinglish feedback shows high engagement from first-year students."
-                    </p>
-                  </div>
-                </div>
               </div>
             </Card>
 
