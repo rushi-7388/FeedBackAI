@@ -23,9 +23,9 @@ export default function LandingPage() {
                 Submit Feedback
               </Button>
             </Link>
-            <Link href="/admin/login">
+            {/* <Link href="/admin/login">
               <Button size="sm">Admin Dashboard</Button>
-            </Link>
+            </Link> */}
           </div>
         </div>
       </nav>
@@ -50,11 +50,11 @@ export default function LandingPage() {
                   Submit Feedback <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
-              <Link href="/admin/login" className="w-full sm:w-auto">
+              {/* <Link href="/admin/login" className="w-full sm:w-auto">
                 <Button size="lg" variant="outline" className="w-full bg-transparent">
                   Admin Portal
                 </Button>
-              </Link>
+              </Link> */}
             </div>
 
             <p className="text-sm text-muted-foreground">
