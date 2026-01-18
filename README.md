@@ -69,11 +69,6 @@ An intelligent, anonymous feedback management system designed for colleges and u
    pnpm dev
    ```
 
-## 🔐 Admin Access
-**Default Credentials for Demo:**
-- **Email**: `admin@dit.edu.in`
-- **Password**: `demo123`
-
 ## 🤝 Contributing
 Contributions are welcome! Please feel free to submit a Pull Request.
 
