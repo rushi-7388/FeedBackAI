@@ -9,6 +9,9 @@ export interface AnalysisResult {
   priority: 'high' | 'medium' | 'low'
   sentiment: 'positive' | 'neutral' | 'negative'
   summary: string
+  language: 'english' | 'hindi' | 'hinglish' | 'other'
+  actionable_insight: string
+  policy_recommendation: string
 }
 
 // Mock categories
@@ -16,13 +19,18 @@ const CATEGORIES = ['academic', 'facilities', 'student-life', 'administration', 
 
 // Keywords for simple analysis
 const PRIORITY_INDICATORS = {
-  high: ['urgent', 'critical', 'emergency', 'serious', 'dangerous', 'broken', 'unsafe', 'emergency'],
-  medium: ['concern', 'issue', 'problem', 'needs', 'should', 'poor', 'difficult'],
+  high: ['urgent', 'critical', 'emergency', 'serious', 'dangerous', 'broken', 'unsafe', 'bekar', 'problem', 'kharab'],
+  medium: ['concern', 'issue', 'problem', 'needs', 'should', 'poor', 'difficult', 'theek nahi'],
 }
 
 const SENTIMENT_INDICATORS = {
-  positive: ['great', 'love', 'excellent', 'amazing', 'wonderful', 'good', 'best', 'perfect', 'thank'],
-  negative: ['bad', 'hate', 'terrible', 'awful', 'worst', 'hate', 'frustrating', 'disappointed'],
+  positive: ['great', 'love', 'excellent', 'amazing', 'wonderful', 'good', 'best', 'perfect', 'thank', 'badhiya', 'acha', 'shandaar'],
+  negative: ['bad', 'hate', 'terrible', 'awful', 'worst', 'hate', 'frustrating', 'disappointed', 'bekar', 'kharab', 'bakwas'],
+}
+
+const LANGUAGE_INDICATORS = {
+  hindi: ['है', 'हैं', 'नहीं', 'करो', 'हो', 'गया', 'लिए'],
+  hinglish: ['nahi', 'acha', 'kar', 'raha', 'badhiya', 'bakwas', 'kaise', 'yaar', 'please'],
 }
 
 /**
@@ -35,19 +43,26 @@ export function analyzeFeedback(
 ): AnalysisResult {
   const lowerText = feedbackText.toLowerCase()
 
+  // Detect language
+  let language: 'english' | 'hindi' | 'hinglish' | 'other' = 'english'
+  if (LANGUAGE_INDICATORS.hindi.some(w => feedbackText.includes(w))) {
+    language = 'hindi'
+  } else if (LANGUAGE_INDICATORS.hinglish.some(w => lowerText.includes(w))) {
+    language = 'hinglish'
+  }
+
   // Determine category
   let category = suggestedCategory || 'other'
   if (!suggestedCategory) {
-    // Simple keyword-based categorization (mock)
-    if (lowerText.includes('class') || lowerText.includes('course') || lowerText.includes('professor')) {
+    if (lowerText.includes('class') || lowerText.includes('course') || lowerText.includes('professor') || lowerText.includes('padhai')) {
       category = 'academic'
-    } else if (lowerText.includes('building') || lowerText.includes('room') || lowerText.includes('facility')) {
+    } else if (lowerText.includes('building') || lowerText.includes('room') || lowerText.includes('facility') || lowerText.includes('washroom') || lowerText.includes('toilet')) {
       category = 'facilities'
-    } else if (lowerText.includes('event') || lowerText.includes('club') || lowerText.includes('social')) {
+    } else if (lowerText.includes('event') || lowerText.includes('club') || lowerText.includes('social') || lowerText.includes('fest')) {
       category = 'student-life'
-    } else if (lowerText.includes('office') || lowerText.includes('registration') || lowerText.includes('admin')) {
+    } else if (lowerText.includes('office') || lowerText.includes('registration') || lowerText.includes('admin') || lowerText.includes('fee')) {
       category = 'administration'
-    } else if (lowerText.includes('safe') || lowerText.includes('security') || lowerText.includes('dangerous')) {
+    } else if (lowerText.includes('safe') || lowerText.includes('security') || lowerText.includes('dangerous') || lowerText.includes('ragging')) {
       category = 'safety'
     }
   }
@@ -75,15 +90,37 @@ export function analyzeFeedback(
     sentiment = 'positive'
   }
 
-  // Generate summary (mock)
+  // Generate summary
   const summaryLength = Math.min(feedbackText.length, 80)
   const summary = feedbackText.substring(0, summaryLength) + (feedbackText.length > summaryLength ? '...' : '')
+
+  // Generate Actionable Insight and Policy Recommendation (Unique Feature)
+  let actionable_insight = "Acknowledge the feedback and monitor for similar reports."
+  let policy_recommendation = "Review existing feedback trends for this category."
+
+  if (category === 'academic') {
+    if (sentiment === 'negative') {
+      actionable_insight = "Schedule a meeting with the department HOD to review teaching methodology."
+      policy_recommendation = "Implement a mid-semester anonymous teacher evaluation policy."
+    }
+  } else if (category === 'facilities') {
+    if (priority === 'high') {
+      actionable_insight = "Immediately dispatch maintenance team to the reported location."
+      policy_recommendation = "Increase frequency of facility audit checks to once every two weeks."
+    }
+  } else if (category === 'safety') {
+    actionable_insight = "Alert campus security and review CCTV footage if applicable."
+    policy_recommendation = "Mandate 'Campus Safety' workshops for all students and staff."
+  }
 
   return {
     category,
     priority,
     sentiment,
     summary,
+    language,
+    actionable_insight,
+    policy_recommendation
   }
 }
 

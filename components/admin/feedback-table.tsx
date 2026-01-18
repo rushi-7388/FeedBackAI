@@ -129,34 +129,69 @@ export default function FeedbackTable({ data }: FeedbackTableProps) {
             {/* Expanded Content */}
             {isExpanded && (
               <div className="border-t border-border bg-muted/30 p-4">
-                <div className="space-y-3">
-                  <div>
-                    <h4 className="text-xs font-semibold text-muted-foreground uppercase">Full Feedback</h4>
-                    <p className="text-sm text-foreground mt-2 whitespace-pre-wrap">{item.text}</p>
-                  </div>
-                  {item.summary && (
+                  <div className="space-y-4">
                     <div>
-                      <h4 className="text-xs font-semibold text-muted-foreground uppercase">AI Summary</h4>
-                      <p className="text-sm text-foreground mt-2">{item.summary}</p>
+                      <h4 className="text-xs font-semibold text-muted-foreground uppercase">Full Feedback</h4>
+                      <div className="mt-2 p-3 bg-background rounded border border-border">
+                        <p className="text-sm text-foreground whitespace-pre-wrap">{item.text}</p>
+                      </div>
                     </div>
-                  )}
-                  <div className="grid grid-cols-3 gap-4 pt-3 border-t border-border">
-                    <div>
-                      <p className="text-xs text-muted-foreground">Submitted</p>
-                      <p className="text-sm font-medium text-foreground">{formatDate(new Date(item.created_at))}</p>
+
+                    <div className="grid md:grid-cols-2 gap-4">
+                      {/* AI Summary & Language */}
+                      <Card className="p-4 border-primary/20 bg-primary/5">
+                        <div className="flex justify-between items-start mb-2">
+                          <h4 className="text-xs font-bold text-primary uppercase flex items-center gap-1">
+                            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                            AI Insight
+                          </h4>
+                          {item.ai_analysis?.language && (
+                            <Badge variant="outline" className="text-[10px] uppercase border-primary/30 text-primary">
+                              Language: {String(item.ai_analysis.language)}
+                            </Badge>
+                          )}
+                        </div>
+                        <p className="text-sm text-foreground italic">"{item.summary || 'Analyzing...'}"</p>
+                      </Card>
+
+                      {/* Actionable Insight (Unique Feature) */}
+                      <Card className="p-4 border-green-500/20 bg-green-500/5">
+                        <h4 className="text-xs font-bold text-green-600 dark:text-green-400 uppercase mb-2 flex items-center gap-1">
+                          Actionable Step
+                        </h4>
+                        <p className="text-sm text-foreground font-medium">
+                          {item.ai_analysis?.actionable_insight ? String(item.ai_analysis.actionable_insight) : 'Awaiting deeper analysis...'}
+                        </p>
+                      </Card>
+
+                      {/* Policy Recommendation (Unique Feature) */}
+                      <Card className="p-4 border-amber-500/20 bg-amber-500/5 md:col-span-2">
+                        <h4 className="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase mb-2">
+                          Strategic Policy Recommendation
+                        </h4>
+                        <p className="text-sm text-foreground">
+                          {item.ai_analysis?.policy_recommendation ? String(item.ai_analysis.policy_recommendation) : 'Generating long-term recommendation...'}
+                        </p>
+                      </Card>
                     </div>
-                    <div>
-                      <p className="text-xs text-muted-foreground">Status</p>
-                      <p className="text-sm font-medium text-foreground capitalize">{item.status}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-muted-foreground">Feedback ID</p>
-                      <p className="text-sm font-mono text-foreground">{item.id.substring(0, 8)}</p>
+
+                    <div className="grid grid-cols-3 gap-4 pt-3 border-t border-border">
+                      <div>
+                        <p className="text-xs text-muted-foreground">Submitted</p>
+                        <p className="text-sm font-medium text-foreground">{formatDate(new Date(item.created_at))}</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-muted-foreground">Status</p>
+                        <p className="text-sm font-medium text-foreground capitalize">{item.status}</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-muted-foreground">Feedback ID</p>
+                        <p className="text-sm font-mono text-foreground text-[10px]">{item.id}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
           </div>
         )
       })}
