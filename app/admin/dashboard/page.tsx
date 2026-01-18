@@ -42,7 +42,7 @@ export default function AdminDashboard() {
         
         if (!result.success) {
           setError(result.error || 'Failed to load feedback')
-          console.log('[v0] Admin data load error:', result.error)
+          console.log('Admin data load error:', result.error)
           return
         }
 
@@ -72,7 +72,7 @@ export default function AdminDashboard() {
           bySentiment: sentimentCount,
         })
       } catch (err) {
-        console.error('[v0] Dashboard load error:', err)
+        console.error('Dashboard load error:', err)
         setError('An error occurred while loading feedback')
       } finally {
         setIsLoading(false)

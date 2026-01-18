@@ -38,13 +38,13 @@ export async function submitFeedback(formData: {
       .single()
 
     if (error) {
-      console.error('[v0] Feedback submission error:', error)
+      console.error('Feedback submission error:', error)
       return { success: false, error: error.message }
     }
 
     return { success: true, data }
   } catch (error) {
-    console.error('[v0] Feedback submission failed:', error)
+    console.error('Feedback submission failed:', error)
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
@@ -68,7 +68,7 @@ export async function getFeedbackForAdmin(adminToken: string) {
           collegeId = session.collegeId
         }
       } catch (e) {
-        console.log('[v0] Failed to parse session cookie')
+        console.log('Failed to parse session cookie')
       }
     }
 
@@ -79,13 +79,13 @@ export async function getFeedbackForAdmin(adminToken: string) {
       .order('created_at', { ascending: false })
 
     if (error) {
-      console.error('[v0] Fetch feedback error:', error)
+      console.error('Fetch feedback error:', error)
       return { success: false, error: error.message, data: [] }
     }
 
     return { success: true, data: data || [] }
   } catch (error) {
-    console.error('[v0] Fetch feedback failed:', error)
+    console.error('Fetch feedback failed:', error)
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
@@ -105,13 +105,13 @@ export async function getFeedbackByCollege(collegeId: string) {
       .order('created_at', { ascending: false })
 
     if (error) {
-      console.error('[v0] Fetch feedback error:', error)
+      console.error('Fetch feedback error:', error)
       return { success: false, error: error.message, data: [] }
     }
 
     return { success: true, data: data || [] }
   } catch (error) {
-    console.error('[v0] Fetch feedback failed:', error)
+    console.error('Fetch feedback failed:', error)
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
@@ -138,7 +138,7 @@ export async function updateFeedbackStatus(
       .eq('id', feedbackId)
 
     if (updateError) {
-      console.error('[v0] Status update error:', updateError)
+      console.error('Status update error:', updateError)
       return { success: false, error: updateError.message }
     }
 
@@ -155,13 +155,13 @@ export async function updateFeedbackStatus(
         ])
 
       if (responseError) {
-        console.error('[v0] Response insertion error:', responseError)
+        console.error('Response insertion error:', responseError)
       }
     }
 
     return { success: true }
   } catch (error) {
-    console.error('[v0] Feedback update failed:', error)
+    console.error('Feedback update failed:', error)
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',

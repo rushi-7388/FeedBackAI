@@ -36,7 +36,7 @@ export default function AdminLoginPage() {
         setError(result.error || 'Invalid credentials')
       }
     } catch (error) {
-      console.error('[v0] Login error:', error)
+      console.error('Login error:', error)
       setError('An error occurred during login')
     } finally {
       setIsLoading(false)

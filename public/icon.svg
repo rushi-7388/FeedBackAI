@@ -1,19 +1,6 @@
-<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <style>
-    @media (prefers-color-scheme: light) {
-      .background { fill: #3b82f6; }
-      .foreground { fill: white; }
-    }
-    @media (prefers-color-scheme: dark) {
-      .background { fill: #3b82f6; }
-      .foreground { fill: white; }
-    }
-  </style>
-  <rect class="background" width="180" height="180" rx="37" />
-  <g transform="translate(30, 30)">
-    <path class="foreground" d="M60 10C32.4 10 10 32.4 10 60s22.4 50 50 50 50-22.4 50-50S87.6 10 60 10zm0 90c-22.1 0-40-17.9-40-40s17.9-40 40-40 40 17.9 40 40-17.9 40-40 40z"/>
-    <circle class="foreground" cx="45" cy="55" r="8"/>
-    <circle class="foreground" cx="75" cy="55" r="8"/>
-    <path class="foreground" d="M60 85c11 0 20-6.7 20-15H40c0 8.3 9 15 20 15z"/>
-  </g>
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="32" height="32" rx="6" fill="#2563eb"/>
+  <path d="M8 12C8 10.8954 8.89543 10 10 10H22C23.1046 10 24 10.8954 24 12V20C24 21.1046 23.1046 22 22 22H10C8.89543 22 8 21.1046 8 20V12Z" stroke="white" stroke-width="1.5"/>
+  <path d="M12 15H20M12 18H17" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+  <circle cx="23" cy="9" r="3" fill="#22c55e"/>
 </svg>
