@@ -59,8 +59,11 @@ An intelligent, anonymous feedback management system designed for colleges and u
 3. **Configure Environment Variables**:
    Create a `.env` file with your Supabase credentials:
    ```env
+   GEMINI_API_KEY=your_gemini_api_key
    NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+   DATABASE_URL=your_database_url
+   SUPABASE_SERVICE_ROLE_KEY=your_service_role
    ```
 4. **Database Setup**:
    Run the SQL scripts located in `scripts/setup-database.sql` in your Supabase SQL Editor.
