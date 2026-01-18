@@ -51,13 +51,16 @@ export default function FeedbackTable({ data }: FeedbackTableProps) {
     }
   }
 
-  const formatDate = (date: Date) => {
+  const formatDate = (dateInput: string | Date) => {
+    const dateStr = typeof dateInput === 'string' ? dateInput : dateInput.toISOString()
+    const date = new Date(dateStr.endsWith('Z') || dateStr.includes('+') ? dateStr : dateStr + 'Z')
     const now = new Date()
     const diffMs = now.getTime() - date.getTime()
     const diffMins = Math.floor(diffMs / 60000)
     const diffHours = Math.floor(diffMs / 3600000)
     const diffDays = Math.floor(diffMs / 86400000)
 
+    if (diffMins < 0) return 'Just now'
     if (diffMins < 1) return 'Just now'
     if (diffMins < 60) return `${diffMins}m ago`
     if (diffHours < 24) return `${diffHours}h ago`
@@ -117,7 +120,7 @@ export default function FeedbackTable({ data }: FeedbackTableProps) {
 
               {/* Date (Mobile: hidden, Desktop: col-span-3) */}
               <div className="hidden md:flex md:col-span-3 items-center justify-between">
-                <span className="text-xs text-muted-foreground">{formatDate(new Date(item.created_at))}</span>
+                <span className="text-xs text-muted-foreground">{formatDate(item.created_at)}</span>
                 {isExpanded ? (
                   <ChevronUp className="h-4 w-4 text-muted-foreground" />
                 ) : (
@@ -178,7 +181,7 @@ export default function FeedbackTable({ data }: FeedbackTableProps) {
                     <div className="grid grid-cols-3 gap-4 pt-3 border-t border-border">
                       <div>
                         <p className="text-xs text-muted-foreground">Submitted</p>
-                        <p className="text-sm font-medium text-foreground">{formatDate(new Date(item.created_at))}</p>
+                        <p className="text-sm font-medium text-foreground">{formatDate(item.created_at)}</p>
                       </div>
                       <div>
                         <p className="text-xs text-muted-foreground">Status</p>
