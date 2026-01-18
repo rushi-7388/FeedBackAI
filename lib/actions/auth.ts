@@ -63,6 +63,7 @@ export async function adminLogin(email: string, password: string) {
 
       return {
         success: true,
+        token,
         user: {
           id: user.id,
           email: user.email,

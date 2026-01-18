@@ -29,9 +29,10 @@ export default function AdminLoginPage() {
     try {
       const result = await adminLogin(email, password)
 
-      if (result.success) {
-        router.push('/admin/dashboard')
-      } else {
+        if (result.success && result.token) {
+          localStorage.setItem('adminToken', result.token)
+          router.push('/admin/dashboard')
+        } else {
         setError(result.error || 'Invalid credentials')
       }
     } catch (error) {
