@@ -10,7 +10,7 @@ const _geistMono = Geist_Mono({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: 'AI-Powered Student Feedback & Issue Analyzer',
   description: 'Streamline your student feedback process with AI-powered analysis',
-  generator: 'v0.app',
+  generator: '',
   icons: {
     icon: [
       {
