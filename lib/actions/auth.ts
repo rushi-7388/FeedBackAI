@@ -23,7 +23,7 @@ export async function adminLogin(email: string, password: string) {
       .maybeSingle()
 
     if (userError || !user) {
-      console.log('[v0] User lookup failed:', userError)
+      console.log('User lookup failed:', userError)
       return { success: false, error: 'Invalid credentials' }
     }
 
@@ -77,7 +77,7 @@ export async function adminLogin(email: string, password: string) {
         },
       }
   } catch (error) {
-    console.error('[v0] Admin login error:', error)
+    console.error('Admin login error:', error)
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Login failed',
@@ -97,7 +97,7 @@ export async function getAdminSession() {
     const session = JSON.parse(sessionCookie.value)
     return { session, isAdmin: true }
   } catch (error) {
-    console.error('[v0] Get session error:', error)
+    console.error('Get session error:', error)
     return { session: null, isAdmin: false }
   }
 }
@@ -108,7 +108,7 @@ export async function adminLogout() {
     cookieStore.delete('admin_session')
     return { success: true }
   } catch (error) {
-    console.error('[v0] Logout error:', error)
+    console.error('Logout error:', error)
     return { success: false }
   }
 }
@@ -161,13 +161,13 @@ export async function registerUser(data: {
       .single()
 
     if (insertError) {
-      console.error('[v0] User registration error:', insertError)
+      console.error('User registration error:', insertError)
       return { success: false, error: insertError.message }
     }
 
     return { success: true, user: newUser }
   } catch (error) {
-    console.error('[v0] Registration failed:', error)
+    console.error('Registration failed:', error)
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Registration failed',
@@ -184,13 +184,13 @@ export async function getColleges() {
       .order('name')
 
     if (error) {
-      console.error('[v0] Fetch colleges error:', error)
+      console.error('Fetch colleges error:', error)
       return { success: false, error: error.message, data: [] }
     }
 
     return { success: true, data: data || [] }
   } catch (error) {
-    console.error('[v0] Fetch colleges failed:', error)
+    console.error('Fetch colleges failed:', error)
     return { success: false, error: 'Failed to fetch colleges', data: [] }
   }
 }
@@ -205,13 +205,13 @@ export async function getDepartments(collegeId: string) {
       .order('name')
 
     if (error) {
-      console.error('[v0] Fetch departments error:', error)
+      console.error('Fetch departments error:', error)
       return { success: false, error: error.message, data: [] }
     }
 
     return { success: true, data: data || [] }
   } catch (error) {
-    console.error('[v0] Fetch departments failed:', error)
+    console.error('Fetch departments failed:', error)
     return { success: false, error: 'Failed to fetch departments', data: [] }
   }
 }

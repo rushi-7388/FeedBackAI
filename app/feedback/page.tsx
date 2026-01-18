@@ -121,7 +121,7 @@ export default function FeedbackPage() {
         setError(result.error || 'Failed to submit feedback')
       }
     } catch (err) {
-      console.error('[v0] Feedback submission error:', err)
+      console.error('Feedback submission error:', err)
       setError('An unexpected error occurred. Please try again.')
     } finally {
       setIsSubmitting(false)
