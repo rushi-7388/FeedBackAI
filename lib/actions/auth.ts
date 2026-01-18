@@ -8,19 +8,19 @@ export async function adminLogin(email: string, password: string) {
     const supabase = await getSupabaseServer()
 
     // Get user by email and verify role
-    const { data: user, error: userError } = await supabase
-      .from('users')
-      .select(`
-        id,
-        email,
-        password_hash,
-        name,
-        role_id,
-        college_id,
-        roles:role_id(name)
-      `)
-      .eq('email', email)
-      .maybeSingle()
+      const { data: user, error: userError } = await supabase
+        .from('users')
+        .select(`
+          id,
+          email,
+          password_hash,
+          full_name,
+          role_id,
+          college_id,
+          roles:role_id(name)
+        `)
+        .eq('email', email)
+        .maybeSingle()
 
     if (userError || !user) {
       console.log('[v0] User lookup failed:', userError)
@@ -47,30 +47,30 @@ export async function adminLogin(email: string, password: string) {
     const token = `admin_${Date.now()}_${user.id}`
     
     const cookieStore = await cookies()
-    cookieStore.set('admin_session', JSON.stringify({
-      userId: user.id,
-      collegeId: user.college_id,
-      email: user.email,
-      name: user.name,
-      role: roleName,
-      token,
-    }), {
+      cookieStore.set('admin_session', JSON.stringify({
+        userId: user.id,
+        collegeId: user.college_id,
+        email: user.email,
+        name: user.full_name,
+        role: roleName,
+        token,
+      }), {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: 7 * 24 * 60 * 60, // 7 days
     })
 
-    return {
-      success: true,
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        role: roleName,
-        collegeId: user.college_id,
-      },
-    }
+      return {
+        success: true,
+        user: {
+          id: user.id,
+          email: user.email,
+          name: user.full_name,
+          role: roleName,
+          collegeId: user.college_id,
+        },
+      }
   } catch (error) {
     console.error('[v0] Admin login error:', error)
     return {
