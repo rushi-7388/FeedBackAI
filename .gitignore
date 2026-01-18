@@ -22,6 +22,10 @@ yarn-error.log*
 # vercel
 .vercel
 
+# orchids
+.orchids/
+.orchids
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
